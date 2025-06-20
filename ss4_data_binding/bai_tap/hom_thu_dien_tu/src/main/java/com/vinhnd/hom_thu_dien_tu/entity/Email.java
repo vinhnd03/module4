@@ -10,11 +10,11 @@ public class Email {
     private static int counter = 1;
 
     public Email() {
-        this.id = counter++;
+//        this.id = counter++;
     }
 
     public Email(String language, int pageSize, boolean filter, String signature) {
-//        this.id = counter++;
+        this.id = counter++;
         this.language = language;
         this.pageSize = pageSize;
         this.filter = filter;

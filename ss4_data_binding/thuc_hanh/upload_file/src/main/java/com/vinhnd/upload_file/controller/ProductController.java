@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -43,11 +44,21 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public ModelAndView saveProduct(@ModelAttribute ProductForm productForm) {
+    public ModelAndView saveProduct(@ModelAttribute ProductForm productForm, HttpServletRequest request) {
         MultipartFile multipartFile = productForm.getImage();
         String fileName = multipartFile.getOriginalFilename();
         try {
-            FileCopyUtils.copy(productForm.getImage().getBytes(), new File(fileUpload + fileName));
+//            FileCopyUtils.copy(productForm.getImage().getBytes(), new File(fileUpload + fileName));
+
+            String uploadPath = request.getServletContext().getRealPath("/uploads/");
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs(); // tạo thư mục nếu chưa có
+            }
+
+            File destination = new File(uploadDir, fileName);
+            FileCopyUtils.copy(productForm.getImage().getBytes(), destination);
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }

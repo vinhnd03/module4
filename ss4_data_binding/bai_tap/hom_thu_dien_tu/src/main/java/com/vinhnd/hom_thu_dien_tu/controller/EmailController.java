@@ -19,6 +19,7 @@ public class EmailController {
         this.emailService = emailService;
     }
 
+
     @GetMapping("/email")
     private String home(Model model, @ModelAttribute("email") Email selectingEmail){
 
@@ -36,7 +37,13 @@ public class EmailController {
 
     @PostMapping("/add")
     private String add(@ModelAttribute Email email){
-        emailService.add(email);
+        Email newEmail = new Email(
+                email.getLanguage(),
+                email.getPageSize(),
+                email.isFilter(),
+                email.getSignature()
+        );
+        emailService.add(newEmail);
         return "redirect:/email";
     }
 
