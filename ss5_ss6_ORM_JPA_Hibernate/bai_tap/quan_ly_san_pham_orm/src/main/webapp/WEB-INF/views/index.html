@@ -16,9 +16,9 @@
         <button type="submit">Tìm kiếm</button>
     </form>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
-    </button>
+<!--    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">-->
+<!--        Launch demo modal-->
+<!--    </button>-->
 </div>
 <table id = "products">
     <thead>
@@ -40,11 +40,29 @@
         <td th:text="${row.price}"></td>
         <td th:text="${row.description}"></td>
         <td th:text="${row.brand}"></td>
-        <td><a th:href="@{/products/edit/__${row.id}__}">edit</a></td>
-<!--        <td><a th:href="@{/products/delete/__${row.id}__}">delete</a></td>-->
-        <td><a th:onclick="|delete('${row.id}', '${row.name}')|">delete</a></td>
+        <td><a th:href="@{/products/edit/{id}(id=${row.id})}">edit</a></td>
+        <td><a th:href="@{/products/delete/__${row.id}__}">delete</a></td>
+<!--        <td><a href="#" th:onclick="|deleteItem('${row.id}', '${row.name}')|" data-bs-toggle="modal" data-bs-target="#exampleModal">delete</a></td>-->
+<!--        <td>-->
+<!--            <a href="#"-->
+<!--               th:onclick="|deleteItem('${row.id}', '[[${row.name]]')|"-->
+<!--               data-bs-toggle="modal"-->
+<!--               data-bs-target="#exampleModal">-->
+<!--                delete-->
+<!--            </a>-->
+<!--        </td>-->
         <td><a th:href="@{/products/{id}/view(id=${row.getId()})}">view</a></td>
+
     </tr>
+    <script>
+        function deleteItem(id, name) {
+            document.getElementById("item_id").value = id;
+            document.getElementById("item_name").innerText = name;
+
+            console.log("id " + id);
+            console.log("name " + name)
+        }
+    </script>
     </tbody>
 </table>
 <div class="notify">
@@ -55,10 +73,6 @@
 <footer th:replace="/layout :: footer"></footer>
 <div th:replace="/layout :: modal"></div>
 <div th:replace="/layout :: script"></div>
-<script>
-    // function delete(id, name) {
-    //
-    // }
-</script>
+
 </body>
 </html>

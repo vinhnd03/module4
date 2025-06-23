@@ -41,8 +41,8 @@
         <td th:text="${row.description}"></td>
         <td th:text="${row.brand}"></td>
         <td><a th:href="@{/products/edit/__${row.id}__}">edit</a></td>
-<!--        <td><a th:href="@{/products/delete/__${row.id}__}">delete</a></td>-->
-        <td><a th:onclick="|delete('${row.id}', '${row.name}')|">delete</a></td>
+        <td><a th:href="@{/products/delete/__${row.id}__}">delete</a></td>
+<!--        <td><a th:onclick="|delete('${row.id}', '${row.name}')|">delete</a></td>-->
         <td><a th:href="@{/products/{id}/view(id=${row.getId()})}">view</a></td>
     </tr>
     </tbody>
