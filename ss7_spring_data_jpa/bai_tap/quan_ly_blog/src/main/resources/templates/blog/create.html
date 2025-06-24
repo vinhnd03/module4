@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm mới</title>
+</head>
+<body>
+<a href="/blogs">Quay lại danh sách</a>
+<form th:action="@{/blogs/new}" th:object="${blog}" method="post">
+    <table>
+        <input type="hidden" th:field="*{id}">
+        <tr>
+            <td>Tác giả</td>
+            <td>
+                <select th:field="*{user}">
+                    <option th:each="item:${users}" th:value="${item.id}" th:text="${item.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Thể loại</td>
+            <td>
+                <select th:field="*{category}">
+                    <option th:each="item:${categories}" th:value="${item.id}" th:text="${item.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Tiêu đề</td>
+            <td>
+                <input type="text" th:field="*{title}" id="title">
+            </td>
+        </tr>
+        <tr>
+            <td>Nội dung</td>
+            <td>
+                <textarea th:field="*{content}" id="content" rows="4"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Ngày viết</td>
+            <td>
+                <input type="date" th:field="*{date}" readonly>
+            </td>
+        </tr>
+    </table>
+    <button th:text="${(isEdit == null) ? 'Thêm mới' : 'Cập nhật'}">Thêm mới</button>
+</form>
+</body>
+</html>

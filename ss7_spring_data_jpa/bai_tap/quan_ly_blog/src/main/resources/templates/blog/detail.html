@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết</title>
+</head>
+<body>
+<a href="/blogs">Quay lại danh sách</a>
+<h2>Tiêu đề: <span th:text="${blog.title}"></span></h2>
+<h2>Nội dung: <span th:text="${blog.content}"></span></h2>
+<h2>Ngày viết: <span th:text="${blog.date}"></span></h2>
+<h2>Thể loại: <span th:text="${blog.category.name}"></span></h2>
+<h2>Tác giả: <span th:text="${blog.user.name}"></span></h2>
+</body>
+</html>
