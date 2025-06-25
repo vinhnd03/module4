@@ -6,7 +6,20 @@
     <title>Danh sách</title>
 </head>
 <body>
-    <a href="/blogs/new">Tạo blog mới</a>
+    <a href="/blogs/new">Tạo blog mới</a> |
+    <a href="/categories">Quản lý thể loại</a>
+    <form th:action="@{/blogs}" method="get">
+        <input type="text" name="searchTitle" placeholder="Nhập tiêu đề" th:value="${searchTitle}">
+        <select name="searchCategory">
+            <option value="">Chọn danh mục</option>
+            <option th:each="item: ${categories}" th:value="${item.id}" th:text="${item.name}" th:selected="${item.id == searchCategory}"></option>
+        </select>
+        <input type="hidden" name="size" th:value="${size}">
+        <span>Sắp xếp theo ngày</span>
+        <input type="radio" name="sortDate" value="false" th:checked="${sortDate == false}"> <span>Giảm dần</span>
+        <input type="radio" name="sortDate" value="true" th:checked="${sortDate == true}"> <span>Tăng dần</span>
+        <button>Tìm kiếm</button>
+    </form>
     <table border="1">
         <thead>
             <tr>
@@ -22,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="item, itemStatus: ${blogList}">
+            <tr th:each="item, itemStatus: ${blogPage.content}">
                 <td th:text="${itemStatus.count}"></td>
                 <td th:text="${item.user.name}"></td>
                 <td th:text="${item.category.name}"></td>
@@ -35,6 +48,28 @@
             </tr>
         </tbody>
     </table>
+    <div>
+        <form th:action="@{/blogs}">
+            <span>Kích thước</span>
+<!--            <input name="page" th:value="${blogPage.number}" type="hidden">-->
+            <input name="searchTitle" th:value="${searchTitle}" type="hidden">
+            <input name="searchCategory" th:value="${searchCategory}" type="hidden">
+            <input name="sortDate" th:value="${sortDate}" type="hidden">
+
+            <select name="size" onchange="this.form.submit()">
+                <option value="">Kích thước</option>
+                <option th:each="item: ${sizeList}" th:value="${item}" th:text="${item}" th:selected="${item == size}"></option>
+            </select>
+        </form>
+    </div>
+    <p><b th:if="${blogPage.totalPages == 0}">Không có dữ liệu</b></p>
+    <div  th:if="${blogPage.totalPages != 0}">
+        <a th:if="${blogPage.hasPrevious()}" th:href="@{/blogs(page=${blogPage.number -1},
+        searchTitle=${searchTitle}, searchCategory=${searchCategory}, size=${size}, sortDate=${sortDate})}">Trước</a>
+        <span th:text="${blogPage.number + 1}"></span> / <span th:text="${blogPage.totalPages}"></span>
+        <a  th:if="${blogPage.hasNext()}" th:href="@{/blogs(page=${blogPage.number +1},
+        searchTitle=${searchTitle}, searchCategory=${searchCategory}, size=${size}, sortDate=${sortDate})}">Sau</a>
+    </div>
 
 </body>
 <html/>

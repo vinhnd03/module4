@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thể loại</title>
+</head>
+<body>
+<a href="/categories/new">Tạo thể loại mới</a>|
+<a href="/blogs">Quản lý blog</a>
+<table border="1">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>Thể loại</th>
+        <th>Chỉnh sửa</th>
+        <th>Xóa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item, itemStatus: ${categoryList}">
+        <td th:text="${itemStatus.count}"></td>
+        <td th:text="${item.name}"></td>
+        <td><a th:href="@{/categories/edit(id=${item.id})}">Chỉnh sửa</a></td>
+        <td><a th:href="@{/categories/delete(id=${item.id})}">Xóa</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
