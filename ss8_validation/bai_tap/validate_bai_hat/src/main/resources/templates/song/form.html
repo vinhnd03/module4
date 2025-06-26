@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="/song">Quay về danh sách</a>
+<form action="/song/add" th:object="${song}" method="post">
+    <table>
+        <input type="hidden" name="id" th:field="*{id}">
+        <tr>
+            <td>Tên bài hát</td>
+            <td><input type="text" name="name" th:field="*{name}">
+                <small style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{name}"></small></td>
+
+        </tr>
+        <tr>
+            <td>Tên ca sĩ</td>
+            <td><input type="text" name="singer" th:field="*{singer}">
+                <small style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{singer}"></small></td>
+
+        </tr>
+        <tr>
+            <td>Thể loại</td>
+            <td><input type="text" name="category" th:field="*{category}">
+                <small style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{category}"></small></td>
+
+        </tr>
+    </table>
+    <button th:text="${(isEdit == null) ? 'Thêm mới' : 'Cập nhật'}"></button>
+</form>
+</body>
+</html>
