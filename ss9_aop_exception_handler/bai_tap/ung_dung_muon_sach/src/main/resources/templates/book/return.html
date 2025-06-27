@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trả sách</title>
+</head>
+<body>
+<a href="/books">Trở về trang danh sách</a> | <a href="#" onclick="window.history.back(); return false;">Trở về trang trước</a>
+    <h1>Trả sách</h1>
+    <form action="/books/return" method="post">
+        <input type="number" placeholder="Nhập mã mượn..." name="code">
+        <small th:if="${error}" style="color:red;" th:text="${error}"></small>
+        <button>Xác nhận</button>
+    </form>
+
+
+</body>
+</html>

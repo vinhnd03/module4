@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th = "http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách</title>
+</head>
+<body>
+    <a href="/books/borrowList">Lịch sử mượn</a>
+    <h1>Danh sách</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên sách</th>
+                <th>Thể loại</th>
+                <th>Số lượng</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item, itemStatus: ${books}">
+                <td th:text="${itemStatus.count}"></td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.category}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td><a th:href="@{/books/{id}/detail(id=${item.id})}">Chi tiết</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
