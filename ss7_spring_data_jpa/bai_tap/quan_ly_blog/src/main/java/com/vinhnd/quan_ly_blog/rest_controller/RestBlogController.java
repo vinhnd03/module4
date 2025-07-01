@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/blogs")
@@ -57,7 +59,7 @@ public class RestBlogController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Blog> edit(@PathVariable("id") Long id, @RequestBody Blog editedBlog){
+    public ResponseEntity<Blog> put(@PathVariable("id") Long id, @RequestBody Blog editedBlog){
         Blog blog = blogService.findById(id);
         if(blog == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -66,6 +68,26 @@ public class RestBlogController {
             return new ResponseEntity<>(blogService.save(editedBlog), HttpStatus.OK);
         }
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Blog> patch(@PathVariable("id") Long id,@RequestBody Map<String, Object> update){
+        Blog blog = blogService.findById(id);
+        if(blog == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(update.containsKey("title")){
+            blog.setTitle((String) update.get("title"));
+        } else if (update.containsKey("content")) {
+            blog.setContent((String) update.get("title"));
+        } else if (update.containsKey("date")) {
+            blog.setDate((LocalDate) update.get("date"));
+        }
+
+        Blog updatedBlog = blogService.save(blog);
+        return new ResponseEntity<>(updatedBlog, HttpStatus.OK);
+    }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Blog> delete(@PathVariable("id") Long id){
@@ -90,4 +112,6 @@ public class RestBlogController {
             return new ResponseEntity<>(blogs.getContent(), HttpStatus.OK);
         }
     }
+
+
 }
