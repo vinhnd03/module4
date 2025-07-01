@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm mới</title>
+</head>
+<body>
+<a href="/categories">Quay lại danh sách</a>
+<form th:action="@{/categories/new}" th:object="${category}" method="post">
+    <table>
+        <input type="hidden" th:field="*{id}">
+        <tr>
+            <td>Tên thể loại</td>
+            <td>
+                <input type="text" th:field="*{name}" id="title">
+            </td>
+        </tr>
+    </table>
+    <button th:text="${(isEdit == null) ? 'Thêm mới' : 'Cập nhật'}">Thêm mới</button>
+</form>
+</body>
+</html>
