@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/blogs")
 public class RestBlogController {
@@ -102,14 +103,14 @@ public class RestBlogController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Blog>> findAll(@RequestParam(name = "categoryId",required = false, defaultValue = "0") Long cid,
+    public ResponseEntity<Page<Blog>> findAll(@RequestParam(name = "categoryId",required = false, defaultValue = "0") Long cid,
                                                      @RequestParam(required = false, defaultValue = "") String title,
                                                      @PageableDefault(size = 5, page = 0) Pageable pageable){
         Page<Blog> blogs = blogService.findByTitleAndCategory(title, cid, pageable);
         if(blogs.getContent().isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{
-            return new ResponseEntity<>(blogs.getContent(), HttpStatus.OK);
+            return new ResponseEntity<>(blogs, HttpStatus.OK);
         }
     }
 

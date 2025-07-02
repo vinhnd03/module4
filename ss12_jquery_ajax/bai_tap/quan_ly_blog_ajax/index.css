@@ -1,0 +1,6 @@
+.content-cell {
+    max-width: 200px;       /* Giới hạn chiều rộng */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;    /* Không xuống dòng */
+}
