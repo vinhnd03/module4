@@ -40,43 +40,43 @@ public class RestBlogController {
 //    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Blog> getOne(@PathVariable("id") Long id){
+    public ResponseEntity<Blog> getOne(@PathVariable("id") Long id) {
         Blog blog = blogService.findById(id);
-        if(blog == null){
+        if (blog == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
+        } else {
             return new ResponseEntity<>(blog, HttpStatus.OK);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Blog> add(@RequestBody Blog blog){
-        if(blog == null){
+    public ResponseEntity<Blog> add(@RequestBody Blog blog) {
+        if (blog == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }else{
-            Blog savedBlog =  blogService.save(blog);
+        } else {
+            Blog savedBlog = blogService.save(blog);
             return new ResponseEntity<>(savedBlog, HttpStatus.CREATED);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Blog> put(@PathVariable("id") Long id, @RequestBody Blog editedBlog){
+    public ResponseEntity<Blog> put(@PathVariable("id") Long id, @RequestBody Blog editedBlog) {
         Blog blog = blogService.findById(id);
-        if(blog == null){
+        if (blog == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
+        } else {
             editedBlog.setId(id);
             return new ResponseEntity<>(blogService.save(editedBlog), HttpStatus.OK);
         }
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Blog> patch(@PathVariable("id") Long id,@RequestBody Map<String, Object> update){
+    public ResponseEntity<Blog> patch(@PathVariable("id") Long id, @RequestBody Map<String, Object> update) {
         Blog blog = blogService.findById(id);
-        if(blog == null){
+        if (blog == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if(update.containsKey("title")){
+        if (update.containsKey("title")) {
             blog.setTitle((String) update.get("title"));
         } else if (update.containsKey("content")) {
             blog.setContent((String) update.get("title"));
@@ -89,13 +89,12 @@ public class RestBlogController {
     }
 
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Blog> delete(@PathVariable("id") Long id){
+    public ResponseEntity<Blog> delete(@PathVariable("id") Long id) {
         Blog blog = blogService.findById(id);
-        if(blog == null){
+        if (blog == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else {
+        } else {
             blogService.deleteById(id);
             return new ResponseEntity<>(blog, HttpStatus.OK);
 //            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -103,15 +102,16 @@ public class RestBlogController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Page<Blog>> findAll(@RequestParam(name = "categoryId",required = false, defaultValue = "0") Long cid,
-                                                     @RequestParam(required = false, defaultValue = "") String title,
-                                                     @PageableDefault(size = 5, page = 0) Pageable pageable){
+    public ResponseEntity<Page<Blog>> findAll(@RequestParam(name = "categoryId", required = false, defaultValue = "0") Long cid,
+                                              @RequestParam(required = false, defaultValue = "") String title,
+                                              @PageableDefault(size = 3, page = 0) Pageable pageable) {
         Page<Blog> blogs = blogService.findByTitleAndCategory(title, cid, pageable);
-        if(blogs.getContent().isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else{
-            return new ResponseEntity<>(blogs, HttpStatus.OK);
-        }
+//        if (blogs.getContent().isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } else {
+//            return new ResponseEntity<>(blogs, HttpStatus.OK);
+//        }
+        return new ResponseEntity<>(blogs, HttpStatus.OK);
     }
 
 

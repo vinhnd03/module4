@@ -1,9 +1,29 @@
-function display() {
+let page = 0;
+let pageInfo;
+let titleVar;
+
+function display(page, title) {
+    if(!title){
+        title = "";
+    }
+    if(!page){
+        page = 0;
+    }
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/api/v1/blogs?size=100",
+        url: `http://localhost:8080/api/v1/blogs?page=${page}&title=${title}`,
         success: function (data) {
+            pageInfo = data;
+            titleVar = title;
+            if(data.totalElements === 0){
+                $("#blog-list").html(`<tr><td colspan="7">Không có bài viết nào</td></tr>`);
+                $("#page-info").text("0 / 0");
+                return;
+            }
+
             let content = "";
+            
+            displayPageNumber();
             console.log(data);
             for (let i = 0; i < data.content.length; i++) {
                 content += `<tr>
@@ -19,12 +39,29 @@ function display() {
                     </td>
                 </tr>`
             }
-            $("#blog-list").html(content);
+            $("#blog-list").empty().append(content);
+        },
+        error: function (resp) {
+            console.log(resp)
         }
     })
 };
 
-function updateBlog(){
+function displayNext() {
+    if (page < pageInfo.totalPages - 1) {
+        page++;
+        display(page);
+    }
+}
+
+function displayPrev() {
+    if (page > 0) {
+        page--;
+        display(page);
+    }
+}
+
+function updateBlog() {
     let id = $("#id").val();
     let title = $("#title").val();
     let content = $("#content").val();
@@ -54,17 +91,17 @@ function updateBlog(){
         type: "PUT",
         url: "http://localhost:8080/api/v1/blogs/" + id,
         data: JSON.stringify(updateBlog),
-        success: function(){
+        success: function () {
             alert("Cập nhật thành công");
             document.getElementById("blog-form").reset();
-            display();
-        }, error: function(err){
+            display(page, titleVar);
+        }, error: function (err) {
             console.log(err)
         }
     })
 }
 
-function viewBlog(itemJson){
+function viewBlog(itemJson) {
     let item = JSON.parse(decodeURIComponent(itemJson));
     $('#id').val(item.id);
     $("#title").val(item.title);
@@ -109,7 +146,7 @@ function create() {
         success: function () {
             alert("Thành công");
             document.getElementById("blog-form").reset();
-            display();
+            display(page,titleVar);
         }
     })
 }
@@ -118,7 +155,15 @@ function deleteBlog(id) {
     $.ajax({
         type: "DELETE",
         url: `http://localhost:8080/api/v1/blogs/${id}`,
-        success: display
+        success: function(){
+            if(pageInfo.content.length === 1 && page > 0){
+                page--;
+            }
+            display(page, titleVar)
+        },
+        error: function(resp){
+            console.log(resp);
+        }
     })
 }
 
@@ -150,19 +195,34 @@ function loadUserList() {
     })
 }
 
-function cancel(){
+function cancel() {
     $("#btn-create").show();
     $("#btn-update").hide();
     $("#blog-form").slideUp();
 }
 
+function displayPageNumber(){
+    let pageNumber = (page + 1) + " / " + pageInfo.totalPages;
+    $("#page-info").html(pageNumber);
+}
+
+function searchByTitle(){
+    page = 0;
+    let inputTitle = $('#search-title').val();
+    display(page, inputTitle);
+}
+
 $(document).ready(function () {
     // Mọi code bên trong đây sẽ chạy khi DOM đã sẵn sàng
-    display();
+
+    display(page);
     loadCategoryList();
     loadUserList();
 
     $("#btn-update").hide();
+    $("#btn-next").click(displayNext);
+    $("#btn-prev").click(displayPrev);
+    $("#btn-search").click(searchByTitle);
 
     $("#blog-form").hide();
     $(".btn-info").click(function () {
