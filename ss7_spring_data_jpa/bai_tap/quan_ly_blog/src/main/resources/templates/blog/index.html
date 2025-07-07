@@ -1,75 +1,86 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Danh sách</title>
+    <title th:text="#{index.list}"></title>
+    <div th:replace="fragments/layout :: libraries"></div>
 </head>
 <body>
-    <a href="/blogs/new">Tạo blog mới</a> |
-    <a href="/categories">Quản lý thể loại</a>
+    <div th:replace="fragments/layout :: nav"></div>
+    <a href="/blogs/new" th:text="#{index.createNew}"></a>
+    <div sec:authorize="hasRole('ADMIN')">
+        | <a href="/categories" th:text="#{index.categoryManagement}"></a>
+    </div>
+
     <form th:action="@{/blogs}" method="get">
-        <input type="text" name="searchTitle" placeholder="Nhập tiêu đề" th:value="${searchTitle}">
+        <input type="text" name="searchTitle" th:placeholder="#{index.inputTitle}" th:value="${searchTitle}">
         <select name="searchCategory">
-            <option value="">Chọn danh mục</option>
+            <option value="" th:text="#{index.selectCategory}"></option>
             <option th:each="item: ${categories}" th:value="${item.id}" th:text="${item.name}" th:selected="${item.id == searchCategory}"></option>
         </select>
         <input type="hidden" name="size" th:value="${size}">
-        <span>Sắp xếp theo ngày</span>
-        <input type="radio" name="sortDate" value="false" th:checked="${sortDate == false}"> <span>Giảm dần</span>
-        <input type="radio" name="sortDate" value="true" th:checked="${sortDate == true}"> <span>Tăng dần</span>
-        <button>Tìm kiếm</button>
+        <span th:text="#{index.sortByDate}"></span>
+        <input type="radio" name="sortDate" value="false" th:checked="${sortDate == false}"> <span th:text="#{index.decrease}"></span>
+        <input type="radio" name="sortDate" value="true" th:checked="${sortDate == true}"> <span th:text="#{index.increase}"></span>
+        <button th:text="#{index.search}"></button>
     </form>
     <table border="1">
         <thead>
             <tr>
-                <th>STT</th>
-                <th>Tác giả</th>
-                <th>Thể loại</th>
-                <th>Tiêu đề</th>
-                <th>Nội dung</th>
-                <th>Ngày viết</th>
-                <th>Chi tiết</th>
-                <th>Chỉnh sửa</th>
-                <th>Xóa</th>
+                <th>#</th>
+                <th th:text="#{index.user}"></th>
+                <th th:text="#{index.category}"></th>
+                <th th:text="#{index.title}"></th>
+                <th th:text="#{index.content}"></th>
+                <th th:text="#{index.date}"></th>
+                <th th:text="#{index.detail}"></th>
+                <th th:text="#{index.edit}"></th>
+                <th th:text="#{index.delete}"></th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="item, itemStatus: ${blogPage.content}">
                 <td th:text="${itemStatus.count}"></td>
-                <td th:text="${item.user.name}"></td>
+                <td th:text="${item.myUser.name}"></td>
                 <td th:text="${item.category.name}"></td>
                 <td th:text="${item.title}"></td>
                 <td th:text="${item.content}"></td>
                 <td th:text="${#temporals.format(item.date, 'dd/MM/yyyy')}"></td>
-                <td><a th:href="@{/blogs/detail(id=${item.id})}">Chi tiết</a></td>
-                <td><a th:href="@{/blogs/edit(id=${item.id})}">Chỉnh sửa</a></td>
-                <td><a th:href="@{/blogs/delete(id=${item.id})}">Xóa</a></td>
+                <td><a th:href="@{/blogs/detail(id=${item.id})}" th:text="#{index.detail}"></a></td>
+                <td><a th:href="@{/blogs/edit(id=${item.id})}" th:text="#{index.edit}"></a></td>
+                <td><a th:href="@{/blogs/delete(id=${item.id})}" th:text="#{index.delete}"></a></td>
             </tr>
         </tbody>
     </table>
     <div>
         <form th:action="@{/blogs}">
-            <span>Kích thước</span>
+            <span th:text="#{index.size}"></span>
 <!--            <input name="page" th:value="${blogPage.number}" type="hidden">-->
             <input name="searchTitle" th:value="${searchTitle}" type="hidden">
             <input name="searchCategory" th:value="${searchCategory}" type="hidden">
             <input name="sortDate" th:value="${sortDate}" type="hidden">
 
             <select name="size" onchange="this.form.submit()">
-                <option value="">Kích thước</option>
+                <option value="" th:text="#{index.size}"></option>
                 <option th:each="item: ${sizeList}" th:value="${item}" th:text="${item}" th:selected="${item == size}"></option>
             </select>
         </form>
     </div>
-    <p><b th:if="${blogPage.totalPages == 0}">Không có dữ liệu</b></p>
+    <p><b th:if="${blogPage.totalPages == 0}" th:text="#{index.noContent}"></b></p>
     <div  th:if="${blogPage.totalPages != 0}">
         <a th:if="${blogPage.hasPrevious()}" th:href="@{/blogs(page=${blogPage.number -1},
-        searchTitle=${searchTitle}, searchCategory=${searchCategory}, size=${size}, sortDate=${sortDate})}">Trước</a>
+        searchTitle=${searchTitle}, searchCategory=${searchCategory}, size=${size}, sortDate=${sortDate})}" th:text="#{index.previous}"></a>
         <span th:text="${blogPage.number + 1}"></span> / <span th:text="${blogPage.totalPages}"></span>
         <a  th:if="${blogPage.hasNext()}" th:href="@{/blogs(page=${blogPage.number +1},
-        searchTitle=${searchTitle}, searchCategory=${searchCategory}, size=${size}, sortDate=${sortDate})}">Sau</a>
+        searchTitle=${searchTitle}, searchCategory=${searchCategory}, size=${size}, sortDate=${sortDate})}" th:text="#{index.next}"></a>
     </div>
-
+    <span th:text="#{index.language}"></span>
+    <a href="?lang=en" th:text="#{index.english}">English</a> |
+    <a href="?lang=vi" th:text="#{index.vietnamese}"></a> |
+    <a href="?lang=ja" th:text="#{index.japanese}"></a> |
+    <a href="?lang=zh" th:text="#{index.chineses}"></a> |
+    <a href="?lang=ko" th:text="#{index.korea}"></a>
 </body>
 <html/>

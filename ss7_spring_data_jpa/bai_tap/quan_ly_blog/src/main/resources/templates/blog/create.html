@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Thêm mới</title>
+    <title th:text="#{create.new}"></title>
+    <div th:replace="fragments/layout :: libraries"></div>
 </head>
 <body>
-<a href="/blogs">Quay lại danh sách</a>
+<div th:replace="fragments/layout :: nav"></div>
+<a href="/blogs" th:text="#{create.backToList}"></a>
 <form th:action="@{/blogs/new}" th:object="${blog}" method="post">
     <table>
         <input type="hidden" th:field="*{id}">
         <tr>
-            <td>Tác giả</td>
+            <td th:text="#{index.user}"></td>
             <td>
-                <select th:field="*{user}">
-                    <option th:each="item:${users}" th:value="${item.id}" th:text="${item.name}"></option>
+                <select th:field="*{myUser}">
+                    <option th:each="item:${myUsers}" th:value="${item.id}" th:text="${item.name}"></option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td>Thể loại</td>
+            <td th:text="#{index.category}"></td>
             <td>
                 <select th:field="*{category}">
                     <option th:each="item:${categories}" th:value="${item.id}" th:text="${item.name}"></option>
@@ -27,25 +30,26 @@
             </td>
         </tr>
         <tr>
-            <td>Tiêu đề</td>
+            <td th:text="#{index.title}"></td>
             <td>
                 <input type="text" th:field="*{title}" id="title">
             </td>
         </tr>
         <tr>
-            <td>Nội dung</td>
+            <td th:text="#{index.content}"></td>
             <td>
                 <textarea th:field="*{content}" id="content" rows="4"></textarea>
             </td>
         </tr>
         <tr>
-            <td>Ngày viết</td>
+            <td th:text="#{index.date}"></td>
             <td>
                 <input type="date" th:field="*{date}" readonly>
             </td>
         </tr>
     </table>
-    <button th:text="${(isEdit == null) ? 'Thêm mới' : 'Cập nhật'}">Thêm mới</button>
+    <button th:if="${isEdit == null}" th:text="#{create.newBtn}"></button>
+    <button th:unless="${isEdit == null}" th:text="#{create.updateBtn}"></button>
 </form>
 </body>
 </html>

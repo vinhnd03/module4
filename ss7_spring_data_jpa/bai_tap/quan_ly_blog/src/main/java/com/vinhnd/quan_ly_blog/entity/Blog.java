@@ -9,7 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -28,7 +27,7 @@ public class Blog implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private MyUser myUser;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

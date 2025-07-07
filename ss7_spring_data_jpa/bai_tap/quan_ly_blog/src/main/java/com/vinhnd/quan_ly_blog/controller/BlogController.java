@@ -2,7 +2,7 @@ package com.vinhnd.quan_ly_blog.controller;
 
 import com.vinhnd.quan_ly_blog.entity.Blog;
 import com.vinhnd.quan_ly_blog.entity.Category;
-import com.vinhnd.quan_ly_blog.entity.User;
+import com.vinhnd.quan_ly_blog.entity.MyUser;
 import com.vinhnd.quan_ly_blog.service.IBlogService;
 import com.vinhnd.quan_ly_blog.service.ICategoryService;
 import com.vinhnd.quan_ly_blog.service.IUserService;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -35,7 +33,7 @@ public class BlogController {
     }
 
     @ModelAttribute("users")
-    public List<User> getAllUser() {
+    public List<MyUser> getAllUser() {
         return userService.findAll();
     }
 

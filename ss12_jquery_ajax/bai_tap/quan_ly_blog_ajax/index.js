@@ -228,4 +228,5 @@ $(document).ready(function () {
     $(".btn-info").click(function () {
         $("#blog-form").slideToggle();
     });
+
 });

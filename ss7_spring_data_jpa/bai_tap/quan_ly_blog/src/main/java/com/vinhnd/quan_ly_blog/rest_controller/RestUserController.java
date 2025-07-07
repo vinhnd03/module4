@@ -1,7 +1,6 @@
 package com.vinhnd.quan_ly_blog.rest_controller;
 
-import com.vinhnd.quan_ly_blog.entity.Category;
-import com.vinhnd.quan_ly_blog.entity.User;
+import com.vinhnd.quan_ly_blog.entity.MyUser;
 import com.vinhnd.quan_ly_blog.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +22,12 @@ public class RestUserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
-        List<User> users = userService.findAll();
-        if(users.isEmpty()){
+    public ResponseEntity<List<MyUser>> findAll(){
+        List<MyUser> myUsers = userService.findAll();
+        if(myUsers.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return new ResponseEntity<>(myUsers, HttpStatus.OK);
         }
     }
 }

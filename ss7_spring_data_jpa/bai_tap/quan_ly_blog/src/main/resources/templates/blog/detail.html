@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Chi tiết</title>
+    <title th:text="#{detail.pageTitle}"></title>
+    <div th:replace="fragments/layout :: libraries"></div>
 </head>
 <body>
-<a href="/blogs">Quay lại danh sách</a>
-<h2>Tiêu đề: <span th:text="${blog.title}"></span></h2>
-<h2>Nội dung: <span th:text="${blog.content}"></span></h2>
-<h2>Ngày viết: <span th:text="${blog.date}"></span></h2>
-<h2>Thể loại: <span th:text="${blog.category.name}"></span></h2>
-<h2>Tác giả: <span th:text="${blog.user.name}"></span></h2>
+<div th:replace="fragments/layout :: nav"></div>
+<a href="/blogs" th:text="#{detail.backToList}"></a>
+<h2><span th:text="#{index.title} + ': '"></span> <span th:text="${blog.title}"></span></h2>
+<h2><span th:text="#{index.content} + ': '"></span> <span th:text="${blog.content}"></span></h2>
+<h2><span th:text="#{index.date} + ': '"></span> <span th:text="${blog.date}"></span></h2>
+<h2><span th:text="#{index.category} + ': '"></span> <span th:text="${blog.category.name}"></span></h2>
+<h2><span th:text="#{index.user} + ': '"></span> <span th:text="${blog.getMyUser.name}"></span></h2>
 </body>
 </html>

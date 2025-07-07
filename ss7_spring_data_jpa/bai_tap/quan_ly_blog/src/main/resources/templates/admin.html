@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www/thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+</head>
+<body>
+<a href="/blogs">Danh sách Blog</a>
+    <h1>Đây là trang admin</h1>
+    <h2>Xin chào: <span th:text="${username}"></span></h2>
+    <h2>Vai trò: <span th:text="${roles}"></span></h2>
+</body>
+</html>
